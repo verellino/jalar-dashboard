@@ -1,61 +1,87 @@
-import PageWrapper from '@/components/Container/PageWrapper'
 import { buttonVariants } from '@/components/ui/button';
+import PageWrapper from '@/components/wrapper/page-wrapper';
+import config from '@/config';
 import { cn } from '@/lib/utils';
+import { getBlogSlug } from '@/utils/functions/blog/get-blog-slug';
 import { ChevronLeft } from 'lucide-react';
-import Link from 'next/link';
-import React from 'react'
 import Image from 'next/image';
-import ReactHtmlParser from 'react-html-parser'
-import { getBlogSlug } from '@/utils/actions/blog/get-blog-slug';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import ReactHtmlParser from 'react-html-parser';
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   try {
-    const { response } = await getBlogSlug(params?.slug)
+    const info = await fetch(`https://tsafi.xyz/api/blog/${process.env.BLOG_SITE_ID}/${params?.slug}`, {
+      method: "POST",
+      headers: {
+        "X-Auth-Key": process.env.CMS_API_KEY!,
+      },
+    });
 
-    if (response?.length === 0) {
+    if (!info.ok) {
+      throw new Error(`API request failed with status ${info.status}`);
+    }
+
+    const contentType = info.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      throw new Error("Invalid content type received from API");
+    }
+
+    const { response } = await info.json();
+
+    if (!response || response.length === 0) {
       return {
         title: "Not Found",
         description: "The page you are looking for does not exist"
-      }
+      };
     }
 
     return {
       openGraph: {
-        title: response?.[0]?.title,
-        description: response?.[0]?.subtitle,
-        images: [response?.[0]?.image],
+        title: response[0]?.title,
+        description: response[0]?.subtitle,
+        images: [response[0]?.image],
       },
-      keywords: [...response?.[0]?.keywords]
-    }
+      keywords: [...response[0]?.keywords]
+    };
   } catch (error) {
-    console.error(error)
+    console.error('Error fetching metadata:', error);
     return {
-      title: "Not Found",
-      description: "The page you are looking for does not exist"
-    }
+      title: "Error",
+      description: "An error occurred while fetching the page content"
+    };
   }
 }
 
 export async function generateStaticParams() {
   try {
-    const response: any = await fetch(
-      "https://cms.rasmic.xyz/api/blog/slugs",
+    const response = await fetch(
+      "https://tsafi.xyz/api/blog/slugs",
       {
+        method: "GET",
         headers: {
           "X-Auth-Key": process.env.CMS_API_KEY!,
         },
       }
     );
 
-    const result = await response.json()
-    if (result?.error) {
-      throw new Error(`Failed to fetch articles: ${response.statusText}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    if (result?.response?.length === 0) return [];
+    const result = await response.json();
 
-    return result?.response?.map((post: any) => ({
-      slug: post?.slug,
+    if (result.status !== 200 || result.message !== "success") {
+      throw new Error(`API error: ${result.message}`);
+    }
+
+    if (!Array.isArray(result.response)) {
+      console.warn('Unexpected response structure:', result);
+      return [];
+    }
+
+    return result.response.map((post: { slug: string }) => ({
+      slug: post.slug,
     }));
 
   } catch (error) {
@@ -64,9 +90,13 @@ export async function generateStaticParams() {
   }
 }
 
-
 export default async function Blog({ params }: { params: { slug: string } }) {
-  const { response } = await getBlogSlug(params?.slug)
+
+  if (!config?.features?.blog) {
+    redirect("/")
+  }
+
+  const { response } = await getBlogSlug(params?.slug, process.env.BLOG_SITE_ID!)
 
   return (
     <PageWrapper>
@@ -102,9 +132,9 @@ export default async function Blog({ params }: { params: { slug: string } }) {
               <p className="font-medium">
                 {response?.[0]?.author?.author_name}
               </p>
-              {/* <Link href={`https://www.instagram.com/${response?.[0]?.author?.author_instagram}`} target='_blank'>
-                <p className='text-xs text-gray-800 font-semibold hover:underline hover:cursor-pointer'>@{response?.[0]?.author?.author_instagram}</p>
-              </Link> */}
+              <Link href={`https://www.instagram.com/${response?.[0]?.author?.author_twitter}`} target='_blank'>
+                <p className='text-xs dark:text-gray-200 text-gray-500 font-semibold hover:underline hover:cursor-pointer'>@{response?.[0]?.author?.author_twitter}</p>
+              </Link>
             </div>
           </div>
         </div>
@@ -127,6 +157,7 @@ export default async function Blog({ params }: { params: { slug: string } }) {
           </Link>
         </div>
       </article>
+      <></>
     </PageWrapper>
   )
 }

@@ -1,5 +1,5 @@
-import { userCreate } from "@/utils/db/userCreate";
-import { userUpdate } from "@/utils/db/userUpdate";
+import { userCreate } from "@/utils/functions/user/userCreate";
+import { userUpdate } from "@/utils/functions/user/userUpdate";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
@@ -55,12 +55,11 @@ export async function POST(req: Request) {
   const { id } = evt.data;
   const eventType = evt.type;
 
-  console.log("eventType", eventType);
 
   switch (eventType) {
     case "user.created":
       try {
-        const response = await userCreate({
+        await userCreate({
           email: payload?.data?.email_addresses?.[0]?.email_address,
           first_name: payload?.data?.first_name,
           last_name: payload?.data?.last_name,
@@ -68,7 +67,6 @@ export async function POST(req: Request) {
           user_id: payload?.data?.id,
         });
 
-        console.log("res", response);
         return NextResponse.json({
           status: 200,
           message: "User info inserted",

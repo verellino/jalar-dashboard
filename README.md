@@ -11,6 +11,10 @@
 
 Everything you need to quickly build your SaaS, AI product, or any other web application fast giving you time to focus on what really matters
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=michaelshimeles/nextjs-starter-kit&type=Date)](https://star-history.com/#michaelshimeles/nextjs-starter-kit&Date)
+
 ## Battries Include
 - Functional subscription payments via Stripe
 - User authentication
@@ -18,6 +22,7 @@ Everything you need to quickly build your SaaS, AI product, or any other web app
 - Landing page template
 - Dashboard layout & template
 - Marketing page template
+- Custom Video Player
 
 ## Technologies Used
 
@@ -83,7 +88,7 @@ Everything you need to quickly build your SaaS, AI product, or any other web app
     NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
     WEBHOOK_SECRET=
     NEXT_PUBLIC_SUPABASE_URL=
-    NEXT_PUBLIC_SUPABASE_ANON_KEY=
+    SUPABASE_SERVICE_KEY=
     DATABASE_URL=
     DIRECT_URL=
 

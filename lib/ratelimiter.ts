@@ -1,13 +1,37 @@
 import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
-import { Redis } from "@upstash/redis"; // see below for cloudflare and fastly adapters
+import { Redis } from "@upstash/redis";
 
-// Create a new ratelimiter, that allows 10 requests per 10 seconds
-export const ratelimit = new Ratelimit({
-  redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(5, "10 s"),
-  analytics: true,
-  timeout: 10000, // 10 second
-});
+type RateLimitConfig = {
+  enabled: boolean;
+  ratelimit: Ratelimit | null;
+};
 
+let ratelimitConfig: RateLimitConfig = {
+  enabled: false,
+  ratelimit: null,
+};
 
-// For more details on ratelimiting https://github.com/upstash/ratelimit
+if (process.env.UPSTASH_REDIS_REST_URL) {
+  const redis = Redis.fromEnv();
+
+  // Create a new ratelimiter, that allows 5 requests per 10 seconds
+  const ratelimitFunction = new Ratelimit({
+    redis: redis,
+    limiter: Ratelimit.slidingWindow(5, "10 s"),
+    analytics: true,
+    enableProtection: true,
+  });
+
+  ratelimitConfig = {
+    enabled: true,
+    ratelimit: ratelimitFunction,
+  };
+} else {
+  console.error("Environment variable UPSTASH_REDIS_REST_URL is not set.");
+  ratelimitConfig = {
+    enabled: false,
+    ratelimit: null,
+  };
+}
+
+export { ratelimitConfig };
