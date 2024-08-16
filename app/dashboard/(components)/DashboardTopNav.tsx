@@ -1,16 +1,21 @@
-"use client"
+"use client";
 
-import { ModeToggle } from '@/components/ModeToggle'
-import { Profile } from '@/components/Profile'
-import { Button } from '@/components/ui/button'
-import { Dialog, DialogClose } from '@/components/ui/dialog'
-import { Separator } from '@/components/ui/separator'
-import { SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
-import { HamburgerMenuIcon } from '@radix-ui/react-icons'
-import { Banknote, Folder, HomeIcon, Settings } from 'lucide-react'
-import Link from 'next/link'
-import { ReactNode } from 'react'
-import { FaTasks } from 'react-icons/fa'
+import { ModeToggle } from "@/components/ModeToggle";
+import { Profile } from "@/components/Profile";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogClose } from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
+import {
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { Banknote, Folder, HomeIcon, Settings } from "lucide-react";
+import Link from "next/link";
+import { ReactNode } from "react";
+import { FaTasks } from "react-icons/fa";
 
 export default function DashboardTopNav({ children }: { children: ReactNode }) {
   return (
@@ -26,7 +31,7 @@ export default function DashboardTopNav({ children }: { children: ReactNode }) {
           <SheetContent side="left">
             <SheetHeader>
               <Link href="/">
-                <SheetTitle>Nextjs Starter Kit</SheetTitle>
+                <SheetTitle>Jalar Dashboard</SheetTitle>
               </Link>
             </SheetHeader>
             <div className="flex flex-col space-y-3 mt-[1rem]">
@@ -81,5 +86,5 @@ export default function DashboardTopNav({ children }: { children: ReactNode }) {
       </header>
       {children}
     </div>
-  )
+  );
 }
