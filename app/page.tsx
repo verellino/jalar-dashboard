@@ -1,11 +1,6 @@
 import PageWrapper from "@/components/Container/PageWrapper";
-import { AccordionComponent } from "@/components/LandingPage/AccordionComponent";
-import AnimatedLogoCloud from "@/components/LandingPage/AnimatedLogoCloud";
-import BlogSample from "@/components/LandingPage/BlogSamples";
+import AnimatedLogoCloud from "@/components/homepage/animated-logo-cloud";
 import HeroSection from "@/components/LandingPage/HeroSection";
-import MarketingCards from "@/components/LandingPage/MarketingCards";
-import PricingPage from "@/components/LandingPage/Pricing";
-import SideBySide from "@/components/LandingPage/SideBySide";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
