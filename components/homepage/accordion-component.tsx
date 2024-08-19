@@ -1,24 +1,76 @@
+import { Section, Container } from "@/components/craft";
+
+import { ArrowUpRight } from "lucide-react";
+
 import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/components/ui/accordion"
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
+type FAQItem = {
+  question: string;
+  answer: string;
+  link?: string;
+};
+
+const content: FAQItem[] = [
+  {
+    question: "Lorem ipsum dolor sit amet?",
+    answer:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    link: "https://google.com",
+  },
+  {
+    question: "Ut enim ad minim veniam?",
+    answer:
+      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  },
+  {
+    question: "Duis aute irure dolor in reprehenderit?",
+    answer:
+      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+  },
+  {
+    question: "Excepteur sint occaecat cupidatat non proident?",
+    answer:
+      "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  },
+];
 
 export function AccordionComponent() {
-    return (
-        <div className="flex flex-col w-[70%] lg:w-[50%]">
-            <h2 className="scroll-m-20 pb-[3rem] text-center text-3xl font-semibold tracking-tight lg:text-4xl">
-                Frequently Asked Questions (FAQs)
-            </h2>
-            <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="item-1">
-                    <AccordionTrigger><span className="text-xl font-semibold">Do I get access to this landing page in the starter kit?</span></AccordionTrigger>
-                    <AccordionContent>
-                        <p>Yes, this page isn&apos;t even a real landing page more so a template for you to build on</p>
-                    </AccordionContent>
-                </AccordionItem>
+  return (
+    <Section>
+      <Container>
+        <h3 className="text-3xl !mt-0 mb-2">Frequently Asked Questions</h3>
+        <h4 className="text-muted-foreground">
+          Can&apos;t find the answer you&apos;re looking for? Reach out to our
+          customer support team.
+        </h4>
+        <div className="not-prose mt-4 flex flex-col gap-4 md:mt-8">
+          {content.map((item, index) => (
+            <Accordion key={index} type="single" collapsible>
+              <AccordionItem value={item.question}>
+                <AccordionTrigger className="text-left">
+                  {item.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-base md:w-3/4">
+                  {item.answer}
+                  {item.link && (
+                    <a
+                      href={item.link}
+                      className="mt-2 flex w-full items-center opacity-60 transition-all hover:opacity-100"
+                    >
+                      Learn more <ArrowUpRight className="ml-1" size="16" />
+                    </a>
+                  )}
+                </AccordionContent>
+              </AccordionItem>
             </Accordion>
+          ))}
         </div>
-    )
+      </Container>
+    </Section>
+  );
 }
