@@ -8,10 +8,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://starter.rasmic.xyz"),
+  metadataBase: new URL("https://verellino.id"),
   title: {
-    default: "Nextjs Starter Kit",
-    template: `%s | Nextjs Starter Kit`,
+    default: "Jalar Dashboard",
+    template: `%s | Jalar Dashboard`,
   },
   description:
     "Everything you need to quickly build your SaaS giving you time to focus on what really matters",
@@ -21,15 +21,15 @@ export const metadata: Metadata = {
     images: [
       "https://utfs.io/f/8a428f85-ae83-4ca7-9237-6f8b65411293-eun6ii.png",
     ],
-    url: "https://starter.rasmic.xyz/",
+    url: "https://verellino.id/",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nextjs Starter",
+    title: "Jalar Dashboard",
     description:
       "Everything you need to quickly build your SaaS giving you time to focus on what really matters.",
     siteId: "",
-    creator: "@rasmic",
+    creator: "@verellino",
     creatorId: "",
     images: [
       "https://utfs.io/f/8a428f85-ae83-4ca7-9237-6f8b65411293-eun6ii.png",
