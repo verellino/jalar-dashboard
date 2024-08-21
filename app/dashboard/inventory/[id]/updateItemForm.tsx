@@ -45,7 +45,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { updateProduct } from "@/app/dashboard/inventory/[id]/update-product-action";
 import {
   Form,
   FormControl,

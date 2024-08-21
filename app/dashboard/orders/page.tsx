@@ -56,7 +56,7 @@ import {
 } from "@/components/ui/tooltip";
 import { NumericFormat } from "react-number-format";
 import OrderStatusBadge from "./_components/orderStatusBadge";
-import OrderPaymentBadge from "./_components/orderpaymentBadge";
+import OrderPaymentBadge from "./_components/orderPaymentBadge";
 import RupiahConverter from "../_components/RupiahConverter";
 
 const data = [
