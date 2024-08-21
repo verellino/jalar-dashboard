@@ -1,10 +1,10 @@
 import React from "react";
-import CreateProduct from "./CreateProduct";
+import CreateOrder from "./CreateOrder";
 
 export default function CreatePage() {
   return (
     <div>
-      <CreateProduct />
+      <CreateOrder />
     </div>
   );
 }

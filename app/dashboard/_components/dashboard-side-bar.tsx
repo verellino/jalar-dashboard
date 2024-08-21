@@ -2,7 +2,14 @@
 
 import { Separator } from "@/components/ui/separator";
 import clsx from "clsx";
-import { Banknote, Folder, HomeIcon, Settings } from "lucide-react";
+import {
+  Banknote,
+  Calendar,
+  Folder,
+  HomeIcon,
+  Package,
+  Settings,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaTasks } from "react-icons/fa";
@@ -33,7 +40,7 @@ export default function DashboardSideBar() {
           <nav className="grid items-start px-4 text-sm font-medium">
             <Link
               className={clsx(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+                "flex items-center gap-3 rounded-lg px-3 py-4 text-muted-foreground transition-all hover:text-primary",
                 {
                   "flex items-center gap-2 rounded-lg bg-orange-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900 dark:bg-orange-800 dark:text-gray-50 dark:hover:text-gray-50":
                     pathname === "/dashboard",
@@ -41,29 +48,29 @@ export default function DashboardSideBar() {
               )}
               href="/dashboard"
             >
-              <div className="border rounded-lg dark:bg-black dark:border-gray-800 border-gray-400 p-1 bg-white">
-                <HomeIcon className="h-3 w-3" />
+              <div className="">
+                <HomeIcon className="h-4 w-4" />
               </div>
               Home
             </Link>
             <Link
               className={clsx(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+                "flex items-center gap-3 rounded-lg px-3 py-4 text-muted-foreground transition-all hover:text-primary",
                 {
                   "flex items-center gap-2 rounded-lg bg-orange-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900 dark:bg-orange-800 dark:text-gray-50 dark:hover:text-gray-50":
-                    pathname === "/dashboard/projects",
+                    pathname === "/dashboard/production",
                 }
               )}
-              href="/dashboard/projects"
+              href="/dashboard/production"
             >
-              <div className="border rounded-lg dark:bg-black dark:border-gray-800 border-gray-400 p-1 bg-white">
-                <Folder className="h-3 w-3" />
+              <div className="">
+                <Calendar className="h-4 w-4" />
               </div>
-              Projects
+              Production
             </Link>
             <Link
               className={clsx(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+                "flex items-center gap-3 rounded-lg px-3 py-4 text-muted-foreground transition-all hover:text-primary",
                 {
                   "flex items-center gap-2 rounded-lg bg-orange-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900 dark:bg-orange-800 dark:text-gray-50 dark:hover:text-gray-50":
                     pathname === "/dashboard/orders",
@@ -71,17 +78,17 @@ export default function DashboardSideBar() {
               )}
               href="/dashboard/orders"
             >
-              <div className="border rounded-lg dark:bg-black dark:border-gray-800 border-gray-400 p-1 bg-white">
-                <Folder className="h-3 w-3" />
+              <div className="">
+                <Package className="h-4 w-4" />
               </div>
               Orders
               <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                6
+                3
               </Badge>
             </Link>
             <Link
               className={clsx(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+                "flex items-center gap-3 rounded-lg px-3 py-4 text-muted-foreground transition-all hover:text-primary",
                 {
                   "flex items-center gap-2 rounded-lg bg-orange-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900 dark:bg-orange-800 dark:text-gray-50 dark:hover:text-gray-50":
                     pathname === "/dashboard/inventory",
@@ -89,14 +96,15 @@ export default function DashboardSideBar() {
               )}
               href="/dashboard/inventory"
             >
-              <div className="border rounded-lg dark:bg-black dark:border-gray-800 border-gray-400 p-1 bg-white">
-                <Folder className="h-3 w-3" />
+              <div className="">
+                <Folder className="h-4 w-4" />
               </div>
               Inventory
             </Link>
+            <Separator className="my-3" />
             <Link
               className={clsx(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+                "flex items-center gap-3 rounded-lg px-3 py-4 text-muted-foreground transition-all hover:text-primary",
                 {
                   "flex items-center gap-2 rounded-lg bg-orange-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900 dark:bg-orange-800 dark:text-gray-50 dark:hover:text-gray-50":
                     pathname === "/dashboard/finance",
@@ -104,15 +112,15 @@ export default function DashboardSideBar() {
               )}
               href="/dashboard/finance"
             >
-              <div className="border rounded-lg dark:bg-black dark:border-gray-800 border-gray-400 p-1 bg-white">
-                <Banknote className="h-3 w-3" />
+              <div className="">
+                <Banknote className="h-4 w-4" />
               </div>
               Finance
             </Link>
             <Separator className="my-3" />
             <Link
               className={clsx(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+                "flex items-center gap-3 rounded-lg px-3 py-4 text-muted-foreground transition-all hover:text-primary",
                 {
                   "flex items-center gap-2 rounded-lg bg-orange-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900 dark:bg-orange-800 dark:text-gray-50 dark:hover:text-gray-50":
                     pathname === "/dashboard/settings",
@@ -121,8 +129,8 @@ export default function DashboardSideBar() {
               href="/dashboard/settings"
               id="onboarding"
             >
-              <div className="border rounded-lg dark:bg-black dark:border-gray-800 border-gray-400 p-1 bg-white">
-                <Settings className="h-3 w-3" />
+              <div className="">
+                <Settings className="h-4 w-4" />
               </div>
               Settings
             </Link>

@@ -1,5 +1,7 @@
 "use client";
-import Image from "next/image";
+import React, { useState, useEffect, Suspense } from "react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter, notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -39,13 +41,11 @@ import {
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { useRef, Suspense } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { createClient } from "@/utils/supabase/client";
-import { addProduct } from "@/app/dashboard/inventory/create/create-product-action";
+import { updateProduct } from "@/app/dashboard/inventory/[id]/update-product-action";
 import {
   Form,
   FormControl,
@@ -58,6 +58,7 @@ import {
 import { SkeletonInput } from "../../_components/skeleton-input";
 
 const CreateProductForm = z.object({
+  id: z.number(),
   name: z.string().min(3, {
     message: "Product name is required",
   }),
@@ -81,25 +82,38 @@ const CreateProductForm = z.object({
 
 type CreateProductFormInput = z.infer<typeof CreateProductForm>;
 
-export default function CreateProduct() {
-  const supabase = createClient();
+async function onSubmit(data: z.infer<typeof CreateProductForm>) {
+  const supabase = createClientComponentClient();
+  const router = useRouter();
+  const response = await supabase
+    .from("item")
+    .update(data)
+    .eq("id", data.id)
+    .select();
+  toast.success("Successfully updated product!");
+  router.push("/dashboard/inventory");
+  return response;
+}
 
+export default function UpdateItemForm({ item }: { item: any }) {
   const form = useForm<CreateProductFormInput>({
+    mode: "onChange",
     resolver: zodResolver(CreateProductForm),
     defaultValues: {
-      name: "",
-      desc: "",
-      stock: 0,
-      price: 0,
-      product_type: "",
+      id: item.id,
+      name: item.name,
+      desc: item.desc,
+      stock: item.stock,
+      price: item.price,
+      product_type: item.product_type,
     },
   });
+  const [name, setName] = useState(item.name);
+  const [desc, setDesc] = useState(item.desc);
+  const [stock, setStock] = useState(item.stock);
+  const [price, setPrice] = useState(item.price);
+  const [productType, setProductType] = useState(item.product_type);
 
-  async function onSubmit(data: z.infer<typeof CreateProductForm>) {
-    const response = await addProduct(data);
-    toast.success("Successfully added product!");
-    return response;
-  }
   return (
     <Suspense fallback={<SkeletonInput />}>
       <Form {...form}>
@@ -116,13 +130,13 @@ export default function CreateProduct() {
               </Link>
             </Button>
             <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
-              Create Product
+              {name}
             </h1>
             <div className="hidden items-center gap-2 md:ml-auto md:flex">
               <Button variant="outline" size="sm">
                 Discard
               </Button>
-              <Button type="submit">Create Item</Button>
+              <Button type="submit">Update Item</Button>
             </div>
           </div>
 
@@ -149,6 +163,9 @@ export default function CreateProduct() {
                               <Input
                                 placeholder="Enter your item name"
                                 {...field}
+                                onChangeCapture={(e) =>
+                                  setName(e.currentTarget.value)
+                                }
                               />
                             </FormControl>
                             <FormMessage />
@@ -168,6 +185,9 @@ export default function CreateProduct() {
                                 className="min-h-32"
                                 placeholder="Enter your item description"
                                 {...field}
+                                onChangeCapture={(e) =>
+                                  setDesc(e.currentTarget.value)
+                                }
                               />
                             </FormControl>
                             <FormMessage />
@@ -186,8 +206,10 @@ export default function CreateProduct() {
                               <FormControl>
                                 <Input
                                   type="number"
-                                  placeholder="0"
                                   {...field}
+                                  onChangeCapture={(e) =>
+                                    setStock(e.currentTarget.value)
+                                  }
                                 />
                               </FormControl>
                               <FormMessage />
@@ -205,8 +227,10 @@ export default function CreateProduct() {
                               <FormControl>
                                 <Input
                                   type="number"
-                                  placeholder="0"
                                   {...field}
+                                  onChangeCapture={(e) =>
+                                    setPrice(e.currentTarget.value)
+                                  }
                                 />
                               </FormControl>
                               <FormMessage />
@@ -224,8 +248,10 @@ export default function CreateProduct() {
                               <FormControl>
                                 <Input
                                   type="number"
-                                  placeholder="0"
                                   {...field}
+                                  onChangeCapture={(e) =>
+                                    setProductType(e.currentTarget.value)
+                                  }
                                 />
                               </FormControl>
                               <FormMessage />
@@ -317,62 +343,3 @@ export default function CreateProduct() {
     </Suspense>
   );
 }
-/* <Card x-chunk="dashboard-07-chunk-1">
-  <CardHeader>
-    <CardTitle>Variants</CardTitle>
-    <CardDescription>
-      Lipsum dolor sit amet, consectetur adipiscing elit
-    </CardDescription>
-  </CardHeader>
-  <CardContent>
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Option Name</TableHead>
-          <TableHead>Option Values</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <TableRow>
-          <TableCell className="font-semibold">
-            <Label htmlFor="variant-name" className="sr-only">
-              Values
-            </Label>
-            <Input
-              id="variant-name"
-              type="text"
-              placeholder="Sizes, colors, materials..."
-            />
-          </TableCell>
-          <TableCell>
-            <Label htmlFor="variant-values" className="sr-only">
-              Values
-            </Label>
-            <Input
-              id="variant-values"
-              type="text"
-              placeholder="S, M, L / Black, White...."
-            />
-          </TableCell>
-          <TableCell>
-                      <ToggleGroup
-                        type="single"
-                        defaultValue="s"
-                        variant="outline"
-                      >
-                        <ToggleGroupItem value="s">S</ToggleGroupItem>
-                        <ToggleGroupItem value="m">M</ToggleGroupItem>
-                        <ToggleGroupItem value="l">L</ToggleGroupItem>
-                      </ToggleGroup>
-                    </TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
-  </CardContent>
-  <CardFooter className="justify-center border-t p-4">
-    <Button size="sm" variant="ghost" className="gap-1">
-      <PlusCircle className="h-3.5 w-3.5" />
-      Add Variant
-    </Button>
-  </CardFooter>
-</Card>; */

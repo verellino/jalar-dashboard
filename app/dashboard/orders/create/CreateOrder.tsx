@@ -91,7 +91,5 @@ const CreateOrderForm = z.object({
 type CreateOrderFormInput = z.infer<typeof CreateOrderForm>;
 
 export default function CreateOrder() {
-  return (
-    
-  );
+  return <p>Order Form...</p>;
 }

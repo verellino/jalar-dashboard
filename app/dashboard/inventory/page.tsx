@@ -54,6 +54,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import RupiahConverter from "../_components/RupiahConverter";
 
 export default async function InventoryPage() {
   const cookieStore = cookies();
@@ -184,7 +185,7 @@ export default async function InventoryPage() {
                               {item.brand}
                             </TableCell>
                             <TableCell className="hidden md:table-cell">
-                              Rp.{item.price}
+                              <RupiahConverter amount={item.price} />
                             </TableCell>
                             <TableCell>
                               <DropdownMenu>

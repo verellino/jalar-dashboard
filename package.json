@@ -67,6 +67,7 @@
     "react-hook-form": "^7.51.3",
     "react-html-parser": "^2.0.2",
     "react-icons": "^4.11.0",
+    "react-number-format": "^5.4.0",
     "react-wrap-balancer": "^1.1.1",
     "recharts": "^2.12.7",
     "sharp": "^0.33.5",

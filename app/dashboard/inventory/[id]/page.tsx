@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
+import UpdateItemForm from "./updateItemForm";
 
 export const revalidate = 0;
 
@@ -22,5 +23,5 @@ export default async function Item({
     notFound();
   }
 
-  return <pre>{JSON.stringify(item, null, 2)}</pre>;
+  return <UpdateItemForm item={item} />;
 }
